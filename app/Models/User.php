@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Database\Factories\UserFactory;
@@ -11,7 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use App\Models\Merchant;
 use App\Models\Order;
 
-#[Fillable(['name', 'email', 'password', 'role'])]
+#[Fillable(['name', 'username', 'email', 'password', 'role'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
