@@ -9,6 +9,20 @@ use App\Models\OrderItem;
 
 class Product extends Model
 {
+    protected $fillable = [
+        'merchant_id',
+        'category_id',
+        'name',
+        'description',
+        'normal_price',
+        'surplus_price',
+        'stock',
+        'pickup_start',
+        'pickup_end',
+        'photo',
+        'status',
+    ];
+
     public function merchant()
     {
         return $this->belongsTo(Merchant::class);

@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminMerchantController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\MerchantProductController;
 
 // ==================================================
 // HALAMAN UTAMA
@@ -71,9 +72,29 @@ Route::middleware(['auth', 'role:merchant'])
     ->name('merchant.')
     ->group(function () {
 
+        // Dashboard
         Route::get('/dashboard', function () {
             return view('merchant.dashboard');
         })->name('dashboard');
+
+        // Manajemen Produk
+        Route::get('/products', [MerchantProductController::class, 'index'])
+            ->name('products.index');
+
+        Route::get('/products/create', [MerchantProductController::class, 'create'])
+            ->name('products.create');
+
+        Route::post('/products', [MerchantProductController::class, 'store'])
+            ->name('products.store');
+
+        Route::get('/products/{product}/edit', [MerchantProductController::class, 'edit'])
+            ->name('products.edit');
+
+        Route::put('/products/{product}', [MerchantProductController::class, 'update'])
+            ->name('products.update');
+
+        Route::delete('/products/{product}', [MerchantProductController::class, 'destroy'])
+            ->name('products.destroy');
 
     });
 
