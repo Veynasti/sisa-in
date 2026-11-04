@@ -124,7 +124,7 @@
                 </div>
 
                 <div class="overflow-x-auto">
-                    <table class="w-full min-w-[850px] text-sm text-left">
+                    <table class="w-full min-w-212.5 text-sm text-left">
 
                         <thead class="bg-gray-50 text-gray-500">
                             <tr>
@@ -204,7 +204,7 @@
                                                         value="approved">
 
                                                     <button type="submit"
-                                                        class="inline-flex items-center justify-center min-w-[85px] px-3 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white text-xs font-semibold transition">
+                                                        class="inline-flex items-center justify-center min-w-21.25 px-3 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white text-xs font-semibold transition">
                                                         Setujui
                                                     </button>
                                                 </form>
@@ -223,7 +223,7 @@
                                                         value="rejected">
 
                                                     <button type="submit"
-                                                        class="inline-flex items-center justify-center min-w-[85px] px-3 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white text-xs font-semibold transition">
+                                                        class="inline-flex items-center justify-center min-w-21.25 px-3 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white text-xs font-semibold transition">
                                                         Tolak
                                                     </button>
                                                 </form>

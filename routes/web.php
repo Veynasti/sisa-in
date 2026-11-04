@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminMerchantController;
+use App\Http\Controllers\AdminDashboardController;
 
 // ==================================================
 // HALAMAN UTAMA
@@ -87,9 +88,8 @@ Route::middleware(['auth', 'role:admin'])
     ->group(function () {
 
         // Dashboard Admin
-        Route::get('/dashboard', function () {
-            return 'Dashboard Admin akan dibuat.';
-        })->name('dashboard');
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])
+            ->name('dashboard');
 
         // Daftar dan Verifikasi Merchant
         Route::get('/merchants', [AdminMerchantController::class, 'index'])

@@ -57,7 +57,7 @@
     </header>
 
     <!-- HERO SECTION -->
-    <section class="relative min-h-[390px] lg:min-h-[430px] overflow-hidden flex items-center">
+    <section class="relative min-h-97.5 lg:min-h-107.5 overflow-hidden flex items-center">
 
         <!-- Background Image Full Section -->
         <img
