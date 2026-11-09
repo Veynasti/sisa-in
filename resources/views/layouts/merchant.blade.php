@@ -45,9 +45,17 @@
                     Produk Saya
                 </a>
 
-                <a href="#"
-                   class="flex items-center gap-3 px-4 py-3 rounded-xl text-green-100 hover:bg-white/10 text-sm transition">
-                    Pesanan Masuk
+                <a href="{{ route('merchant.orders.index') }}"
+                class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-gray-600 transition hover:bg-green-50 hover:text-green-700">
+
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M3 3h2l2.2 11.2a2 2 0 002 1.6h8.9a2 2 0 002-1.6L22 7H6" />
+                        <circle cx="10" cy="20" r="1" />
+                        <circle cx="18" cy="20" r="1" />
+                    </svg>
+
+                    <span>Pesanan Masuk</span>
                 </a>
 
                 <a href="#"
@@ -55,12 +63,36 @@
                     Riwayat Penjualan
                 </a>
 
+
                 <p class="text-xs text-green-200 px-3 pt-7 mb-3">PENGATURAN</p>
 
                 <a href="#"
-                   class="flex items-center gap-3 px-4 py-3 rounded-xl text-green-100 hover:bg-white/10 text-sm transition">
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-green-100 hover:bg-white/10 text-sm transition">
                     Profil Toko
                 </a>
+
+                <a href="{{ route('merchant.qris.index') }}"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition
+                {{ request()->is('merchant/qris*') ? 'bg-white/15 text-white font-medium' : 'text-green-100 hover:bg-white/10' }}">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+
+                        <rect x="3" y="3" width="7" height="7"/>
+                        <rect x="14" y="3" width="7" height="7"/>
+                        <rect x="3" y="14" width="7" height="7"/>
+                        <path d="M14 14h3v3h-3zM20 14v2M14 20h2M19 19h2v2h-2z"/>
+                    </svg>
+                    Pengaturan QRIS
+                </a>
+
             </nav>
 
             {{-- LOGOUT --}}

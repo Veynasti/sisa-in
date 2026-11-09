@@ -1,1 +1,46 @@
 @import "tailwindcss";
+
+
+/* Smooth scrolling untuk navigasi Jelajahi */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Memberi jarak agar judul katalog tidak tertutup navbar */
+#produk {
+    scroll-margin-top: 100px;
+}
+
+/* Transisi antarhalaman */
+@view-transition {
+    navigation: auto;
+}
+
+/* Animasi halaman lama */
+::view-transition-old(root) {
+    animation: page-out 0.2s ease-in both;
+}
+
+/* Animasi halaman baru */
+::view-transition-new(root) {
+    animation: page-in 0.35s ease-out both;
+}
+
+@keyframes page-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes page-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
