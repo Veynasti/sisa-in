@@ -20,6 +20,11 @@ class MerchantCommissionInvoice extends Model
         'paid_at',
         'payment_method',
         'payment_reference',
+        'payment_proof',
+        'verified_by',
+        'rejection_reason',
+        'submitted_at',
+        'verified_at',
     ];
 
     protected function casts(): array
@@ -29,6 +34,8 @@ class MerchantCommissionInvoice extends Model
             'period_end' => 'date',
             'due_date' => 'date',
             'paid_at' => 'datetime',
+            'submitted_at' => 'datetime',
+            'verified_at' => 'datetime',
             'total_commission' => 'decimal:2',
         ];
     }
@@ -38,12 +45,14 @@ class MerchantCommissionInvoice extends Model
         return $this->belongsTo(Merchant::class);
     }
 
+    public function verifiedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'verified_by');
+    }
+
     public function invoiceItems(): HasMany
     {
-        return $this->hasMany(
-            CommissionInvoiceItem::class,
-            'invoice_id'
-        );
+        return $this->hasMany(CommissionInvoiceItem::class, 'invoice_id');
     }
 
     public function commissions(): BelongsToMany

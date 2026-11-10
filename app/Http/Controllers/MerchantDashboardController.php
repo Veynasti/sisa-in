@@ -41,7 +41,12 @@ class MerchantDashboardController extends Controller
                 $query->where('merchant_id', $merchant->id);
             })
             ->whereHas('order', function ($query) {
-                $query->where('status', 'completed');
+                $query->whereIn('status', [
+                    'paid',
+                    'ready_for_pickup',
+                    'completed',
+                ])
+                ->where('payment_status', 'paid');
             })
             ->sum('subtotal');
 

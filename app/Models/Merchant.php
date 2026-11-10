@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
-use App\Models\Product;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Merchant extends Model
 {
@@ -18,13 +18,23 @@ class Merchant extends Model
         'verification_status',
     ];
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function products()
+    public function products(): HasMany
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function commissions(): HasMany
+    {
+        return $this->hasMany(PlatformCommission::class);
+    }
+
+    public function commissionInvoices(): HasMany
+    {
+        return $this->hasMany(MerchantCommissionInvoice::class);
     }
 }

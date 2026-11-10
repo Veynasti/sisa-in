@@ -72,7 +72,7 @@ class CustomerOrderController extends Controller
                     'subtotal' => $subtotal,
                 ]);
 
-                // Stok dipesan agar tidak dipesan pelanggan lain.
+                // Stok dikurangi ketika pesanan dibuat.
                 $product->decrement('stock', $quantity);
 
                 return $order;
@@ -95,5 +95,76 @@ class CustomerOrderController extends Controller
             ->get();
 
         return view('orders.index', compact('orders'));
+    }
+
+    // Membatalkan pesanan oleh pelanggan
+    public function cancel($orderId)
+    {
+        try {
+            DB::transaction(function () use ($orderId) {
+
+                // Pastikan pesanan milik pelanggan yang sedang login.
+                $order = Order::where('user_id', auth()->id())
+                    ->lockForUpdate()
+                    ->findOrFail($orderId);
+
+                // Pembatalan hanya diperbolehkan saat status masih pending.
+                if ($order->status !== 'pending') {
+                    throw new \RuntimeException(
+                        'Pesanan tidak dapat dibatalkan karena sudah diproses.'
+                    );
+                }
+
+                $payment = $order->payment;
+
+                // Pesanan yang sudah dibayar tidak dapat dibatalkan.
+                if (
+                    $order->payment_status === 'paid' ||
+                    ($payment && $payment->status === 'paid')
+                ) {
+                    throw new \RuntimeException(
+                        'Pesanan yang sudah dibayar tidak dapat dibatalkan.'
+                    );
+                }
+
+                // Bukti QRIS yang sudah diunggah harus diperiksa merchant.
+                if ($payment && !empty($payment->payment_proof)) {
+                    throw new \RuntimeException(
+                        'Pesanan tidak dapat dibatalkan karena bukti pembayaran QRIS sudah diunggah.'
+                    );
+                }
+
+                // Kembalikan stok setiap produk dalam pesanan.
+                $order->load('items');
+
+                foreach ($order->items as $item) {
+                    $product = Product::whereKey($item->product_id)
+                        ->lockForUpdate()
+                        ->first();
+
+                    if ($product) {
+                        $product->increment('stock', $item->quantity);
+                    }
+                }
+
+                // Tandai pembayaran sebagai gagal jika sudah ada data pembayaran.
+                if ($payment) {
+                    $payment->status = 'failed';
+                    $payment->save();
+                }
+
+                // Ubah status pesanan menjadi dibatalkan.
+                $order->status = 'cancelled';
+                $order->payment_status = 'failed';
+                $order->save();
+            });
+
+            return redirect()->route('orders.index')
+                ->with('success', 'Pesanan berhasil dibatalkan. Stok produk telah dikembalikan.');
+
+        } catch (\RuntimeException $e) {
+            return redirect()->route('orders.index')
+                ->with('error', $e->getMessage());
+        }
     }
 }
