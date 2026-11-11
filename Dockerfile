@@ -55,12 +55,14 @@ RUN composer install \
 # Salin hasil build Vite
 COPY --from=frontend /app/public/build ./public/build
 
-# Atur document root Apache ke folder public Laravel
+# Atur DocumentRoot Apache ke folder public Laravel
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 ENV PORT=10000
 
-RUN sed -ri 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
-    /etc/apache2/sites-available/000-default.conf
+RUN sed -ri "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" \
+    /etc/apache2/sites-available/000-default.conf \
+    && sed -ri 's/AllowOverride None/AllowOverride All/g' \
+    /etc/apache2/apache2.conf
 
 # Atur permission Laravel
 RUN chown -R www-data:www-data storage bootstrap/cache \
