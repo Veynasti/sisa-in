@@ -33,3 +33,8 @@
 
 # Log
 *.log
+
+# Database backup
+*.dump
+*.dump.sql
+*.sql
