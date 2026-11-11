@@ -1,0 +1,35 @@
+
+# Git
+.git
+.gitignore
+
+# Environment dan credential
+.env
+.env.*
+!.env.example
+
+# PHP dependencies
+/vendor
+
+# Node dependencies
+/node_modules
+
+# Vite build lokal
+/public/build
+/public/hot
+
+# Storage lokal
+/public/storage
+/storage/logs/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/app/private/*
+/storage/app/public/*
+
+# Editor
+.vscode
+.idea
+
+# Log
+*.log
