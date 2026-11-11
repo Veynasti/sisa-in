@@ -1,0 +1,46 @@
+# Stage 1: Build frontend
+FROM node:22-bookworm-slim AS frontend
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm ci
+
+COPY . .
+RUN npm run build
+
+# Stage 2: Laravel + FrankenPHP
+FROM dunglas/frankenphp:1-php8.3-bookworm
+
+RUN install-php-extensions \
+    pdo_pgsql \
+    pgsql \
+    zip \
+    bcmath \
+    opcache
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+WORKDIR /app
+
+COPY . .
+
+RUN composer install \
+    --no-dev \
+    --prefer-dist \
+    --optimize-autoloader \
+    --no-interaction
+
+COPY --from=frontend /app/public/build ./public/build
+COPY Caddyfile /etc/caddy/Caddyfile
+
+ENV APP_ENV=production
+ENV APP_DEBUG=false
+ENV SERVER_NAME=:80
+
+RUN chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
+
+EXPOSE 80
+
+CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile"]
